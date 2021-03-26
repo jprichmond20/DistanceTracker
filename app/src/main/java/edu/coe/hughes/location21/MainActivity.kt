@@ -53,7 +53,9 @@ class MainActivity : AppCompatActivity() {
         preferred = providers!![0] // first == preferred
     }
 
-
+    object Tracker {
+        var totDistance: Long = 0L
+    }
     override fun onResume() {
         super.onResume()
         Log.i(LogTag, "onResume")
@@ -112,6 +114,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateWithNewLocation(location: Location?) {
+
+        val formerLat = Prefs.loadLat(this)
+        val formerLong = Prefs.loadLong(this)
+        val formerLocation: Location
+        Log.i("LATLONG", formerLat + ", " + formerLong)
         val latLongString: String
         val myLocationText: TextView
         myLocationText = findViewById<View>(R.id.myLocationText) as TextView
@@ -122,6 +129,7 @@ class MainActivity : AppCompatActivity() {
             latLongString = "Lat:$lat\nLong:$lng"
             val latitude = location.latitude
             val longitude = location.longitude
+            Prefs.savePref(this, latitude, longitude)
             val gc = Geocoder(this, Locale.getDefault())
             try {
                 val addresses = gc.getFromLocation(latitude, longitude, 1)
@@ -135,6 +143,7 @@ class MainActivity : AppCompatActivity() {
                     sb.append(address.countryName)
                 }
                 addressString = sb.toString()
+                Prefs.savePref(this, latitude, longitude)
                 Log.i(LogTag,addresses.toString())
             } catch (e: IOException) {
             }
