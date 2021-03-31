@@ -117,7 +117,9 @@ class MainActivity : AppCompatActivity() {
         var disBetween = FloatArray(12)
         val formerLat = Prefs.loadLat(this)
         val formerLong = Prefs.loadLong(this)
-        val formerLocation: Location
+        val formerLocation: Location = Location("")
+        formerLocation.latitude = formerLat!!.toDouble()
+        formerLocation.longitude = formerLong!!.toDouble()
         Log.i("LATLONG", formerLat + ", " + formerLong)
         val latLongString: String
         val myLocationText: TextView
