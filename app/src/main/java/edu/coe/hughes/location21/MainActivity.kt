@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateWithNewLocation(location: Location?) {
-
+        var disBetween = FloatArray(12)
         val formerLat = Prefs.loadLat(this)
         val formerLong = Prefs.loadLong(this)
         val formerLocation: Location
@@ -129,6 +129,7 @@ class MainActivity : AppCompatActivity() {
             latLongString = "Lat:$lat\nLong:$lng"
             val latitude = location.latitude
             val longitude = location.longitude
+            Location.distanceBetween(lat, lng, formerLat!!.toDouble(), formerLong!!.toDouble(), disBetween)
             Prefs.savePref(this, latitude, longitude)
             val gc = Geocoder(this, Locale.getDefault())
             try {
