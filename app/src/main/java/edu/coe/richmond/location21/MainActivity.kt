@@ -1,4 +1,4 @@
-package edu.coe.hughes.location21
+package edu.coe.richmond.location21
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     object Tracker {
-        var totDistance: Long = 0L
+        var totDistance: Float = 0.0f
     }
     override fun onResume() {
         super.onResume()
@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateWithNewLocation(location: Location?) {
-        var disBetween = FloatArray(12)
+        var disBetween: Float
         val formerLat = Prefs.loadLat(this)
         val formerLong = Prefs.loadLong(this)
         val formerLocation: Location = Location("")
@@ -124,6 +124,7 @@ class MainActivity : AppCompatActivity() {
         val latLongString: String
         val myLocationText: TextView
         myLocationText = findViewById<View>(R.id.myLocationText) as TextView
+        val textView = findViewById<View>(R.id.textView) as TextView
         var addressString = "No address found"
         if (location != null) {
             val lat = location.latitude
@@ -131,7 +132,8 @@ class MainActivity : AppCompatActivity() {
             latLongString = "Lat:$lat\nLong:$lng"
             val latitude = location.latitude
             val longitude = location.longitude
-            Location.distanceBetween(lat, lng, formerLat!!.toDouble(), formerLong!!.toDouble(), disBetween)
+            disBetween = location.distanceTo(formerLocation)
+            Tracker.totDistance += disBetween
             Prefs.savePref(this, latitude, longitude)
             val gc = Geocoder(this, Locale.getDefault())
             try {
@@ -154,7 +156,7 @@ class MainActivity : AppCompatActivity() {
             latLongString = "No location found"
         }
 
-
+        textView.text = Tracker.totDistance.toString()
         myLocationText.text = "Your Current Position is:\n$latLongString\n$addressString"
     }
 }

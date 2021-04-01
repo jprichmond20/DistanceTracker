@@ -1,4 +1,4 @@
-package edu.coe.hughes.location21
+package edu.coe.richmond.location21
 
 import android.content.Context
 import android.util.Log
