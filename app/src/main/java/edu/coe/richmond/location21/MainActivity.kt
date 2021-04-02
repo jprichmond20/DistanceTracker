@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
             val latitude = location.latitude
             val longitude = location.longitude
             disBetween = location.distanceTo(formerLocation)
-            Tracker.totDistance += disBetween
+            Tracker.totDistance += (disBetween * 3.2808).toFloat()
             Prefs.savePref(this, latitude, longitude)
             val gc = Geocoder(this, Locale.getDefault())
             try {
